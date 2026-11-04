@@ -1,19 +1,35 @@
-// Componente que muestra el menú lateral de navegación de JXS Tech.
-function Sidebar({ onCerrarSesion }) {
+export default function Sidebar({
+  onCerrarSesion,
+  onNavegar,
+  pantalla = 'clientes',
+}) {
   return (
     <aside className="sidebar">
-      <nav className="menu">
-        <button type="button">Panel</button>
-        <button type="button" className="activo">Clientes</button>
-        <button type="button">Productos</button>
-        <button type="button">Ventas</button>
-        <button type="button">Reportes</button>
-        <button type="button" className="cerrar-sesion" onClick={onCerrarSesion}>
+      <nav className="menu" aria-label="Menú principal">
+        <button
+          type="button"
+          className={pantalla === 'clientes' ? 'activo' : ''}
+          onClick={() => onNavegar('clientes')}
+        >
+          Clientes
+        </button>
+
+        <button
+          type="button"
+          className={pantalla === 'productos' ? 'activo' : ''}
+          onClick={() => onNavegar('productos')}
+        >
+          Productos
+        </button>
+
+        <button
+          type="button"
+          className="cerrar-sesion"
+          onClick={onCerrarSesion}
+        >
           Cerrar sesión
         </button>
       </nav>
     </aside>
   )
 }
-
-export default Sidebar

@@ -6,7 +6,7 @@ import ClienteForm from './components/ClienteForm'
 import ClienteTable from './components/ClienteTable'
 import { solicitar } from './api'
 
-export default function GestionClientes({ onCerrarSesion }) {
+export default function GestionClientes({ onCerrarSesion, onNavegar }) {
   const [clientes, setClientes] = useState([])
   const [clienteEditando, setClienteEditando] = useState(null)
   const [pagina, setPagina] = useState(1)
@@ -111,7 +111,11 @@ export default function GestionClientes({ onCerrarSesion }) {
       <Header />
 
       <div className="layout">
-        <Sidebar onCerrarSesion={onCerrarSesion} />
+        <Sidebar
+  onCerrarSesion={onCerrarSesion}
+  onNavegar={onNavegar}
+  pantalla="clientes"
+/>
 
         <main className="contenido">
           <h2>Gestión de clientes</h2>
