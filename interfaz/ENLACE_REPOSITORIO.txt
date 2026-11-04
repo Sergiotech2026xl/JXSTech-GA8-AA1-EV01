@@ -1,6 +1,1 @@
-Evidencia: GA7-220501096-AA4-EV03
-
-Proyecto: JXS Tech - Componente Front-End
-
-Repositorio GitHub:
-https://github.com/Sergiotech2026xl/JXS-Tech-AA4-EV03
+https://github.com/Sergiotech2026xl/JXSTech-GA8-AA1-EV01

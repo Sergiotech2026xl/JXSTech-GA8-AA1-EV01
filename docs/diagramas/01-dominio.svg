@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="720" height="790" preserveAspectRatio="xMinYMin meet" viewBox="0 0 720 790" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="720" height="790"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-790)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="20" y="635" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="20" y="731" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="87.6611328125" y="740" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1480) scale(1,-1)">Usuario</text>
+			<text x="30" y="712" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1424) scale(1,-1)">_id, usuario</text>
+			<text x="30" y="695" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1390) scale(1,-1)">passwordHash</text>
+			<text x="30" y="678" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1356) scale(1,-1)">fechaRegistro</text>
+			<rect x="270" y="635" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="270" y="731" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="340.3271484375" y="740" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1480) scale(1,-1)">Sesion</text>
+			<text x="280" y="712" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1424) scale(1,-1)">usuarioId, usuario</text>
+			<text x="280" y="695" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1390) scale(1,-1)">tokenHash, expira</text>
+			<rect x="20" y="395" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="20" y="491" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="89.99609375" y="500" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1000) scale(1,-1)">Cliente</text>
+			<text x="30" y="472" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,944) scale(1,-1)">nombre, apellido, documento</text>
+			<text x="30" y="455" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,910) scale(1,-1)">correo, telefono, direccion</text>
+			<text x="30" y="438" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,876) scale(1,-1)">activo, revision</text>
+			<rect x="270" y="395" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="270" y="491" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="343.6611328125" y="500" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1000) scale(1,-1)">Venta</text>
+			<text x="280" y="472" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,944) scale(1,-1)">referencia, clienteId, operadorId</text>
+			<text x="280" y="455" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,910) scale(1,-1)">medioPago, totalCOP, estado</text>
+			<text x="280" y="438" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,876) scale(1,-1)">fecha, datos de anulacion</text>
+			<rect x="520" y="395" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="520" y="491" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="583.66796875" y="500" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1000) scale(1,-1)">Producto</text>
+			<text x="530" y="472" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,944) scale(1,-1)">sku, nombre, categoria, marca</text>
+			<text x="530" y="455" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,910) scale(1,-1)">descripcion, precioCOP, stock</text>
+			<text x="530" y="438" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,876) scale(1,-1)">activo, fechaRegistro</text>
+			<rect x="20" y="90" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="20" y="186" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="63.9921875" y="195" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,390) scale(1,-1)">ClienteHistorico</text>
+			<text x="30" y="167" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,334) scale(1,-1)">nombre, apellido, documento</text>
+			<text x="30" y="150" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,300) scale(1,-1)">Documento embebido en venta</text>
+			<rect x="270" y="90" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="270" y="186" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="323.9853515625" y="195" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,390) scale(1,-1)">DetalleVenta</text>
+			<text x="280" y="167" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,334) scale(1,-1)">productoId, sku, nombre</text>
+			<text x="280" y="150" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,300) scale(1,-1)">cantidad, precioUnitarioCOP</text>
+			<text x="280" y="133" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,266) scale(1,-1)">subtotalCOP; embebido</text>
+			<rect x="520" y="90" width="180" height="125" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="520" y="186" width="180" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="576.666015625" y="195" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,390) scale(1,-1)">Movimiento</text>
+			<text x="530" y="167" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,334) scale(1,-1)">productoId, operadorId, ventaId?</text>
+			<text x="530" y="150" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,300) scale(1,-1)">tipo, variacion, motivo, fecha</text>
+			<text x="530" y="133" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,266) scale(1,-1)">stockAnterior, stockPosterior</text>
+			<path d="M 200,700 L 270,700 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="270 700, 262.6315 703.1153, 262.6315 696.8847" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="220.546875" y="712.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,1424) scale(1,-1)">1 / 0..*</text>
+			<path d="M 200,455 L 270,455 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="270 455, 262.6315 458.1153, 262.6315 451.8847" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="220.546875" y="467.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,934) scale(1,-1)">1 / 0..*</text>
+			<path d="M 360,395 L 360,215 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="360 215, 363.1153 222.3685, 356.8847 222.3685" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="386.93115234375" y="305.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,610) scale(1,-1)">1 / 1..50</text>
+			<path d="M 610,395 L 610,215 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="610 215, 613.1153 222.3685, 606.8847 222.3685" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="640.546875" y="305.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,610) scale(1,-1)">1 / 0..*</text>
+			<path d="M 450,215 L 520,395 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="520 395, 514.4258 389.2617, 520.2328 387.0034" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="490.546875" y="305.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,610) scale(1,-1)">0..* / 1</text>
+			<path d="M 270,410 L 200,215 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="200 215, 205.4217 220.8826, 199.5574 222.9877" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="205.27099609375" y="312.5" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,625) scale(1,-1)">1 / 1</text>
+			<text x="20" y="40" style="font-family: Arial; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,80) scale(1,-1)">Relaciones adicionales: Usuario registra ventas y movimientos; una venta origina movimientos.</text>
+			<text x="20" y="20" style="font-family: Arial; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">El detalle referencia al producto. ventaId es opcional en movimientos manuales.</text>
+		</g>
+	</g>
+</svg>

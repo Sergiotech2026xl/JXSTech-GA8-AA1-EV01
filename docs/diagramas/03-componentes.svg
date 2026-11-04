@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="720" height="690" preserveAspectRatio="xMinYMin meet" viewBox="0 0 720 690" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="720" height="690"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-690)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="210" y="550" width="300" height="110" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="210" y="631" width="300" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="307.646484375" y="640" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1280) scale(1,-1)">Navegador / React</text>
+			<text x="220" y="612" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1224) scale(1,-1)">Pantallas, formularios, tablas y menu</text>
+			<text x="220" y="595" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,1190) scale(1,-1)">api.js + token en sessionStorage</text>
+			<rect x="210" y="370" width="300" height="110" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="210" y="451" width="300" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="309.978515625" y="460" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,920) scale(1,-1)">Express / Node.js</text>
+			<text x="220" y="432" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,864) scale(1,-1)">Archivos compilados: interfaz/dist</text>
+			<text x="220" y="415" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,830) scale(1,-1)">Autenticacion y proteccion de rutas</text>
+			<rect x="30" y="175" width="300" height="110" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="30" y="256" width="300" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="118.98046875" y="265" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,530) scale(1,-1)">Modulos comerciales</text>
+			<text x="40" y="237" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,474) scale(1,-1)">Clientes y productos</text>
+			<text x="40" y="220" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,440) scale(1,-1)">Inventario, ventas y anulaciones</text>
+			<rect x="390" y="175" width="300" height="110" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="390" y="256" width="300" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="470.63671875" y="265" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,530) scale(1,-1)">Persistencia compartida</text>
+			<text x="400" y="237" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,474) scale(1,-1)">Conexion e indices</text>
+			<text x="400" y="220" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,440) scale(1,-1)">Transacciones para stock y ventas</text>
+			<rect x="390" y="20" width="300" height="85" rx="7" ry="7" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,95%,97%); fill-rule: evenodd;"/>
+			<rect x="390" y="76" width="300" height="29" style="stroke: rgb(14%,16%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,16%,30%); fill-rule: evenodd;"/>
+			<text x="511.67578125" y="85" style="font-family: Arial-Bold; font-size: 12px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,170) scale(1,-1)">MongoDB</text>
+			<text x="400" y="57" style="font-family: Arial; font-size: 10px;fill: rgb(14%,16%,30%); stroke:none;" transform="translate(0,114) scale(1,-1)">Atlas o replica set</text>
+			<path d="M 360,550 L 360,480 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="360 480, 363.1153 487.3685, 356.8847 487.3685" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<text x="416.78955078125" y="515.0" style="font-family: Arial; font-size: 10px;fill: rgb(54%,10%,32%); stroke:none;" transform="translate(0,1030) scale(1,-1)">HTTP /api + Bearer</text>
+			<path d="M 300,370 L 180,285 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="180 285, 187.8136 286.7169, 184.2121 291.8013" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<path d="M 330,230 L 390,230 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="390 230, 382.6315 233.1153, 382.6315 226.8847" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+			<path d="M 540,175 L 540,105 Z" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="540 105, 543.1153 112.3685, 536.8847 112.3685" style="stroke: rgb(54%,10%,32%); stroke-linecap: butt; stroke-width: 1; fill: rgb(54%,10%,32%); fill-rule: evenodd;"/>
+		</g>
+	</g>
+</svg>

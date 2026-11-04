@@ -260,3 +260,13 @@ Cada incremento se comprobó mediante recorridos funcionales y se registró en G
 La aplicación registra el medio de pago como dato. No procesa pagos bancarios ni incluye pasarelas, facturación electrónica, impuestos o envíos.
 
 La documentación de servicios y la colección de Postman heredadas corresponden al backend de la evidencia anterior. Las instrucciones de instalación y ejecución de GA8 son las de este README.
+
+## Repositorio de esta evidencia
+
+https://github.com/Sergiotech2026xl/JXSTech-GA8-AA1-EV01
+
+Para obtener el codigo y el historial:
+
+```powershell
+git clone https://github.com/Sergiotech2026xl/JXSTech-GA8-AA1-EV01.git
+```
