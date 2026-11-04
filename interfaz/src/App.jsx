@@ -1,85 +1,80 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header'
-import Sidebar from './components/Sidebar'
-import ClienteForm from './components/ClienteForm'
-import ClienteTable from './components/ClienteTable'
+import Acceso from './components/Acceso'
+import GestionClientes from './GestionClientes'
+import { borrarToken, obtenerToken, solicitar } from './api'
 
-// Componente principal de la aplicación JXS Tech.
-function App() {
-  // Estado que almacena la lista de clientes registrados.
-  const [clientes, setClientes] = useState([])
+export default function App() {
+  const [autenticado, setAutenticado] = useState(false)
+  const [comprobando, setComprobando] = useState(true)
+  const [mensaje, setMensaje] = useState('')
 
-  // Guarda temporalmente el cliente que se está editando.
-  const [clienteEditando, setClienteEditando] = useState(null)
+  // Valida en el servidor la sesión guardada en esta pestaña.
+  useEffect(() => {
+    let activo = true
 
-  // Agrega un nuevo cliente a la lista.
-  function agregarCliente(nuevoCliente) {
-    setClientes([...clientes, nuevoCliente])
+    function expirarSesion() {
+      setAutenticado(false)
+      setMensaje('La sesión terminó. Inicia sesión nuevamente.')
+    }
+
+    window.addEventListener('jxstech-sesion-expirada', expirarSesion)
+
+    async function comprobarSesion() {
+      try {
+        if (obtenerToken()) {
+          await solicitar('/usuarios/sesion')
+          if (activo) setAutenticado(true)
+        }
+      } catch (error) {
+        if (activo) setMensaje(error.message)
+      } finally {
+        if (activo) setComprobando(false)
+      }
+    }
+
+    comprobarSesion()
+
+    return () => {
+      activo = false
+      window.removeEventListener('jxstech-sesion-expirada', expirarSesion)
+    }
+  }, [])
+
+  function entrar() {
+    setMensaje('')
+    setAutenticado(true)
   }
 
-  // Elimina un cliente según su identificador.
- // Elimina un cliente después de solicitar confirmación.
-function eliminarCliente(id) {
-  const confirmar = window.confirm(
-    '¿Está seguro de que desea eliminar este cliente?'
-  )
-
-  if (confirmar) {
-    setClientes(
-      clientes.filter((cliente) => cliente.id !== id)
-    )
+  // Invalida la sesión en el servidor y elimina el token local.
+  async function cerrarSesion() {
+    try {
+      await solicitar('/usuarios/logout', { metodo: 'POST' })
+      borrarToken()
+      setAutenticado(false)
+      setMensaje('Sesión cerrada correctamente.')
+    } catch (error) {
+      setMensaje(error.message)
+    }
   }
-}
 
-  // Selecciona el cliente que se desea editar.
-  function editarCliente(cliente) {
-    setClienteEditando(cliente)
-  }
-// Cancela la edición del cliente seleccionado.
-function cancelarEdicion() {
-  setClienteEditando(null)
-}
-  // Actualiza la información de un cliente existente.
-  function actualizarCliente(clienteActualizado) {
-    setClientes(
-      clientes.map((cliente) =>
-        cliente.id === clienteActualizado.id
-          ? clienteActualizado
-          : cliente
-      )
-    )
-
-    // Finaliza el modo de edición.
-    setClienteEditando(null)
+  if (comprobando) {
+    return <p role="status">Comprobando sesión…</p>
   }
 
   return (
-    <div className="app">
-      <Header />
+    <>
+      {mensaje && <p role="status">{mensaje}</p>}
 
-      <div className="layout">
-        <Sidebar />
-
-        <main className="contenido">
-          <h2>Gestión de clientes</h2>
-          <p>Administra los clientes registrados en el sistema.</p>
-
-          <ClienteForm
-  onAgregarCliente={agregarCliente}
-  clienteEditando={clienteEditando}
-  onActualizarCliente={actualizarCliente}
-  onCancelarEdicion={cancelarEdicion}
-/>
-          <ClienteTable
-            clientes={clientes}
-            onEliminarCliente={eliminarCliente}
-            onEditarCliente={editarCliente}
-          />
-        </main>
-      </div>
-    </div>
+      {autenticado ? (
+        <GestionClientes onCerrarSesion={cerrarSesion} />
+      ) : (
+        <div className="app">
+          <Header />
+          <Acceso onEntrar={entrar} />
+        </div>
+      )}
+    </>
   )
 }
-
-export default App

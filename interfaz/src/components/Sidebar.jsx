@@ -1,5 +1,5 @@
 // Componente que muestra el menú lateral de navegación de JXS Tech.
-function Sidebar() {
+function Sidebar({ onCerrarSesion }) {
   return (
     <aside className="sidebar">
       <nav className="menu">
@@ -8,7 +8,7 @@ function Sidebar() {
         <button type="button">Productos</button>
         <button type="button">Ventas</button>
         <button type="button">Reportes</button>
-        <button type="button" className="cerrar-sesion">
+        <button type="button" className="cerrar-sesion" onClick={onCerrarSesion}>
           Cerrar sesión
         </button>
       </nav>

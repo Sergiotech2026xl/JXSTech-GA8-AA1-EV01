@@ -1,61 +1,67 @@
-// Componente encargado de mostrar los clientes registrados.
-function ClienteTable({
+export default function ClienteTable({
   clientes,
-  onEliminarCliente,
-  onEditarCliente,
+  onEditar,
+  onCambiarEstado,
+  ocupado,
 }) {
   return (
-    <section className="tabla-card">
+    <section className="formulario-card" style={{ maxWidth: '100%' }}>
       <h3>Clientes registrados</h3>
 
       {clientes.length === 0 ? (
-        <p className="sin-clientes">
-          No hay clientes registrados.
-        </p>
+        <p>No hay clientes registrados.</p>
       ) : (
-        <table className="tabla-clientes">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Documento</th>
-              <th>Correo</th>
-              <th>Teléfono</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {clientes.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.nombre}</td>
-                <td>{cliente.documento}</td>
-                <td>{cliente.correo}</td>
-                <td>{cliente.telefono}</td>
-
-                <td>
-                  <button
-                    className="boton-editar"
-                    type="button"
-                    onClick={() => onEditarCliente(cliente)}
-                  >
-                    Editar
-                  </button>
-
-                  <button
-                    className="boton-eliminar"
-                    type="button"
-                    onClick={() => onEliminarCliente(cliente.id)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', textAlign: 'left' }}>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {clientes.map((cliente) => (
+                <tr key={cliente._id}>
+                  <td>{cliente.nombre} {cliente.apellido}</td>
+                  <td>{cliente.documento}</td>
+                  <td>{cliente.correo}</td>
+                  <td>{cliente.telefono}</td>
+                  <td>{cliente.direccion}</td>
+                  <td>{cliente.activo ? 'Activo' : 'Inactivo'}</td>
+
+                  <td>
+                    <button
+                      type="button"
+                      className="boton-editar"
+                      onClick={() => onEditar(cliente)}
+                      disabled={ocupado || !cliente.activo}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      className={
+                        cliente.activo ? 'boton-eliminar' : 'boton-editar'
+                      }
+                      onClick={() => onCambiarEstado(cliente)}
+                      disabled={ocupado}
+                    >
+                      {cliente.activo ? 'Desactivar' : 'Reactivar'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   )
 }
-
-export default ClienteTable
