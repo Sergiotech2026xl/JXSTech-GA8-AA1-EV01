@@ -165,3 +165,22 @@
   color: #f87171;
   font-size: 13px;
 }
+/* Selectores de productos, categorías y movimientos. */
+.campo select {
+  padding: 12px;
+  border: 1px solid #3f3f46;
+  border-radius: 7px;
+  background: #09090b;
+  color: white;
+  font: inherit;
+}
+
+.campo select:focus {
+  outline: 2px solid #a21caf;
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

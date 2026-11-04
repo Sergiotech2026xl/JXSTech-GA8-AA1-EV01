@@ -1,3 +1,9 @@
+const OPCIONES = [
+  { id: 'clientes', nombre: 'Clientes' },
+  { id: 'productos', nombre: 'Productos' },
+  { id: 'inventario', nombre: 'Inventario' },
+]
+
 export default function Sidebar({
   onCerrarSesion,
   onNavegar,
@@ -6,21 +12,16 @@ export default function Sidebar({
   return (
     <aside className="sidebar">
       <nav className="menu" aria-label="Menú principal">
-        <button
-          type="button"
-          className={pantalla === 'clientes' ? 'activo' : ''}
-          onClick={() => onNavegar('clientes')}
-        >
-          Clientes
-        </button>
-
-        <button
-          type="button"
-          className={pantalla === 'productos' ? 'activo' : ''}
-          onClick={() => onNavegar('productos')}
-        >
-          Productos
-        </button>
+        {OPCIONES.map((opcion) => (
+          <button
+            key={opcion.id}
+            type="button"
+            className={pantalla === opcion.id ? 'activo' : ''}
+            onClick={() => onNavegar(opcion.id)}
+          >
+            {opcion.nombre}
+          </button>
+        ))}
 
         <button
           type="button"

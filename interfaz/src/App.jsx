@@ -4,7 +4,14 @@ import Header from './components/Header'
 import Acceso from './components/Acceso'
 import GestionClientes from './GestionClientes'
 import GestionProductos from './GestionProductos'
+import GestionInventario from './GestionInventario'
 import { borrarToken, obtenerToken, solicitar } from './api'
+
+const PANTALLAS = {
+  clientes: GestionClientes,
+  productos: GestionProductos,
+  inventario: GestionInventario,
+}
 
 export default function App() {
   const [autenticado, setAutenticado] = useState(false)
@@ -12,7 +19,6 @@ export default function App() {
   const [mensaje, setMensaje] = useState('')
   const [pantalla, setPantalla] = useState('clientes')
 
-  // Valida en el servidor la sesión guardada en esta pestaña.
   useEffect(() => {
     let activo = true
 
@@ -51,7 +57,6 @@ export default function App() {
     setAutenticado(true)
   }
 
-  // Invalida la sesión en el servidor y elimina el token local.
   async function cerrarSesion() {
     try {
       await solicitar('/usuarios/logout', { metodo: 'POST' })
@@ -68,22 +73,17 @@ export default function App() {
     return <p role="status">Comprobando sesión…</p>
   }
 
+  const Pantalla = PANTALLAS[pantalla] || GestionClientes
+
   return (
     <>
       {mensaje && <p role="status">{mensaje}</p>}
 
       {autenticado ? (
-        pantalla === 'productos' ? (
-          <GestionProductos
-            onCerrarSesion={cerrarSesion}
-            onNavegar={setPantalla}
-          />
-        ) : (
-          <GestionClientes
-            onCerrarSesion={cerrarSesion}
-            onNavegar={setPantalla}
-          />
-        )
+        <Pantalla
+          onCerrarSesion={cerrarSesion}
+          onNavegar={setPantalla}
+        />
       ) : (
         <div className="app">
           <Header />
