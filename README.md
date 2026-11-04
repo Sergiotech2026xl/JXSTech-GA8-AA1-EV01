@@ -1,17 +1,56 @@
-# JXSTech — Servicios web de la tienda
+# JXS Tech — Aplicación web integrada
 
-Aprendiz: Sergio Murillo. Evidencia: GA7-220501096-AA5-EV03.
-Actividad: Diseño y desarrollo de servicios web – proyecto. Versión: 2.0.0.
+Aprendiz: Sergio Murillo  
+Evidencia: GA8-220501096-AA1-EV01  
+Actividad: Desarrollar software a partir de la integración de sus módulos componentes.
 
-## Propósito
+## Descripción
 
-API para la tienda de relojes y audífonos inteligentes JXSTech: acceso de operadores, clientes, catálogo de productos, entradas y salidas de inventario, ventas y anulaciones. Se amplía EV01 conservando JavaScript, Node.js, Express, MongoDB, bcryptjs y dotenv. Los clientes conservan los campos del módulo trabajado en evidencias anteriores.
+Aplicación web para la gestión comercial de una tienda de relojes y audífonos inteligentes.
 
-## Instalación y ejecución
+Integra autenticación de operadores, clientes, productos, inventario, ventas y anulaciones. La interfaz React consume una API desarrollada con Node.js y Express. Los datos se almacenan en MongoDB.
 
-Se requiere Node.js 20.19 o posterior, npm y MongoDB Atlas o un replica set. Se verificó con Node.js 24.21.0. Un MongoDB standalone no permite las transacciones de esta aplicación.
+## Funciones implementadas
 
-Desde la carpeta del proyecto:
+- Registro, inicio y cierre de sesión de operadores.
+- Validación de la sesión al recargar la aplicación.
+- Registro, consulta, edición, desactivación y reactivación de clientes.
+- Registro, consulta, edición, desactivación y reactivación de productos.
+- Registro de entradas y salidas de inventario.
+- Consulta de existencias e historial de movimientos.
+- Registro de ventas con uno o varios productos.
+- Consulta del detalle histórico de las ventas.
+- Anulación de ventas con restitución de existencias.
+- Validaciones en la interfaz y en el servidor.
+- Listados con paginación.
+
+## Arquitectura
+
+La aplicación se organiza en tres capas:
+
+1. Presentación: React, componentes JSX y CSS dentro de `interfaz/src`.
+2. Aplicación y reglas del negocio: rutas y módulos de Express dentro de `backend/src`.
+3. Persistencia: MongoDB, índices y transacciones, mediante el controlador oficial de MongoDB.
+
+Durante el desarrollo, Vite dirige las solicitudes `/api` al backend mediante un proxy.
+
+En la ejecución compilada, Express sirve los archivos de `interfaz/dist` y atiende los servicios `/api` desde el mismo puerto.
+
+## Requisitos
+
+- Node.js y npm. Entorno verificado: Node.js 24.21.0 y npm 11.19.0.
+- MongoDB Atlas o una instalación de MongoDB con replica set.
+- Acceso de red y permisos sobre la base de datos configurada.
+- Navegador web.
+- Git para el control de versiones.
+
+MongoDB sin replica set no permite ejecutar las transacciones que utiliza este proyecto.
+
+## Instalación
+
+Abrir una terminal en la carpeta principal del proyecto.
+
+Instalar las dependencias del backend:
 
 ```powershell
 cd backend
@@ -19,76 +58,205 @@ npm.cmd ci
 Copy-Item .env.example .env
 ```
 
-Edita `.env` con tu conexión privada. Usa DB_NAME=jxstech_ev03 y PORT=3001 para mantener separados los datos y el puerto de EV01. El usuario de Atlas necesita permisos sobre esa base y la IP debe estar autorizada. No compartas `.env`.
+Editar `backend/.env` y configurar una conexión propia:
+
+```dotenv
+PORT=3001
+MONGODB_URI="CONEXION_PRIVADA_DE_MONGODB"
+DB_NAME=jxstech_ga8
+```
+
+El valor de ejemplo debe sustituirse por una conexión válida. El archivo `.env` contiene información privada y está excluido del repositorio.
+
+Instalar las dependencias del frontend y compilar:
 
 ```powershell
+cd ../interfaz
+npm.cmd ci
+npm.cmd run build
+```
+
+## Ejecución de la versión compilada
+
+Desde `interfaz`, entrar al backend e iniciar el servidor:
+
+```powershell
+cd ../backend
 npm.cmd start
 ```
 
-Consulta http://localhost:3001/api/salud para comprobar la conexión. La página http://localhost:3001 demuestra registro y login. Los demás servicios se utilizan con Postman. El frontend React anterior no está integrado en esta entrega.
+Abrir en el navegador:
 
-## Documentación
+http://localhost:3001/
 
-- [Guía paso a paso](docs/GUIA_DE_EJECUCION.md).
-- [Manual de diseño y servicios](docs/SERVICIOS.md).
-- [Manual para leer o imprimir en el navegador](docs/SERVICIOS.html).
-- [Documentación en PDF](docs/Documentacion_JXSTech_EV03.pdf).
-- [Especificación OpenAPI 3.0.3](docs/openapi.json).
-- [Colección de Postman con 36 solicitudes](postman/JXSTech_EV03.postman_collection.json).
+El backend sirve la interfaz compilada y los servicios web.
 
-Hay 24 operaciones: disponibilidad; registro, login, sesión y logout; creación, listado, consulta, actualización, baja lógica y reactivación de clientes y productos; consulta de existencias e historial y registro de movimientos; listado, consulta, registro y anulación de ventas.
+Si la entrega incluye `interfaz/dist`, puede utilizarse esa compilación. El comando `npm.cmd run build` permite regenerarla.
 
-La base de la API es http://localhost:3001/api. Los módulos comerciales requieren Authorization: Bearer <token>. El login entrega un token con duración de 8 horas; el servidor guarda su hash. El cierre de sesión invalida ese token.
+Para verificar la disponibilidad de la API y la conexión con MongoDB:
 
-## Reglas de negocio
+http://localhost:3001/api/salud
 
-- Categorías reloj y audifonos; SKU único. Stock inicial cero.
-- Toda entrada o salida deja un movimiento con motivo, operador y saldos.
-- Precios y totales en pesos colombianos enteros. El servidor calcula la venta con los precios del catálogo.
-- Una venta requiere cliente y productos activos, stock suficiente y referencia única.
-- Venta, detalles y movimientos se confirman en una transacción. Si falla una línea, se revierten todos los cambios.
-- La anulación conserva la venta y restituye las existencias una sola vez.
-- Las bajas son lógicas. Un producto requiere stock cero para desactivarse y puede reactivarse.
-- Las ventas conservan los datos y precios históricos.
+La dirección localhost corresponde al computador donde se ejecuta el servidor.
 
-Esta versión académica local asigna los mismos permisos a todos los operadores registrados y escucha en 127.0.0.1. Registra el medio de pago como dato; no integra pasarelas de pago, impuestos, envíos ni facturación electrónica.
+## Primer acceso
 
-## Pruebas
+1. Abrir la aplicación.
+2. Seleccionar "Registrar operador".
+3. Crear un usuario de entre 3 y 30 caracteres, utilizando letras, números o guion bajo.
+4. Elegir una contraseña de al menos 8 caracteres, sin superar 72 bytes.
+5. Iniciar sesión con las credenciales creadas.
 
-Desde backend, con `.env` configurado:
+Los operadores registrados tienen los mismos permisos en esta versión académica.
+
+La base configurada para GA8 es independiente de las bases utilizadas en evidencias anteriores. Los usuarios de otra base no se transfieren automáticamente.
+
+## Ambiente de desarrollo
+
+Iniciar el backend en una terminal:
+
+```powershell
+cd backend
+npm.cmd start
+```
+
+En otra terminal, desde la carpeta principal:
+
+```powershell
+cd interfaz
+npm.cmd run dev
+```
+
+Abrir:
+
+http://localhost:5173/
+
+El proxy de Vite conecta las solicitudes `/api` con el backend del puerto 3001.
+
+## Base de datos
+
+El inicio del backend prepara las colecciones e índices necesarios:
+
+- usuarios
+- sesiones
+- clientes
+- productos
+- movimientos
+- ventas
+
+Se crean índices únicos para usuario, token de sesión, documento y correo del cliente, SKU y referencia de venta.
+
+Los documentos se generan al utilizar los módulos. No se requiere importar datos de las pruebas manuales para iniciar una instalación nueva.
+
+## Reglas del negocio
+
+- Los productos se registran con existencias en cero.
+- Las existencias cambian mediante movimientos de inventario, ventas y anulaciones.
+- Cada movimiento conserva su motivo, operador y saldos anterior y posterior.
+- No se permiten salidas superiores a las existencias disponibles.
+- No se permite desactivar productos con existencias.
+- Las ventas requieren clientes y productos activos.
+- La referencia de venta es única.
+- El servidor calcula los precios y totales en pesos colombianos enteros.
+- Una venta y sus movimientos se procesan dentro de una transacción.
+- La anulación conserva la venta y restituye las unidades una sola vez.
+- Clientes y productos utilizan desactivación lógica.
+- Las ventas conservan los datos del cliente y los precios del momento del registro.
+
+## Seguridad
+
+- Contraseñas almacenadas mediante hash con bcrypt.
+- Tokens de sesión aleatorios; el servidor almacena su hash.
+- Sesiones con vencimiento y cierre de sesión que invalida el token.
+- Token del navegador almacenado en sessionStorage.
+- Autorización mediante Bearer token para los módulos comerciales.
+- Validación de campos permitidos, formatos, identificadores y límites.
+- Restricción de intentos en las operaciones de registro e inicio de sesión.
+- Límite del tamaño de las solicitudes JSON.
+- Credenciales privadas excluidas de Git.
+
+La configuración de ejecución incluida escucha en la interfaz local del computador.
+
+## Ambiente y pruebas
+
+### Pruebas unitarias
+
+Desde `backend`:
+
+```powershell
+npm.cmd run test:unitarias
+```
+
+Ejecutan reglas aisladas de autenticación, clientes, productos, inventario, ventas y validaciones compartidas. Utilizan colaboradores simulados sin conectarse a MongoDB.
+
+Resultado verificado: 18 aprobadas y 0 fallidas.
+
+Informe: `docs/resultados-unitarias-ga8.txt`.
+
+### Pruebas de integración
+
+Desde `backend`, con una conexión válida en `.env`:
 
 ```powershell
 npm.cmd test
 ```
 
-La suite ejecuta solicitudes HTTP contra MongoDB real. Genera una base temporal con prefijo jxstech_ev03_test_ y elimina únicamente esa base al terminar. No usa DB_NAME como destino de pruebas ni borra EV01 o EV03. El usuario de Atlas debe poder crear y eliminar esas bases temporales.
+Ejecutan solicitudes HTTP contra MongoDB real.
 
-Se aprobaron 38 casos de integración. La colección también se ejecutó con Newman: 36 solicitudes y 82 comprobaciones aprobadas, sin fallos. Consulta el [informe de verificación](docs/VERIFICACION.md), [resultados de integración](docs/resultados-pruebas.json) y [resultados de Postman/Newman](docs/resultados-postman.json). La colección permite repetir la demostración y genera datos ficticios nuevos. Sigue la guía antes de ejecutarla.
+Cada ejecución crea una base temporal independiente con prefijo `jxstech_ev03_test_` y elimina únicamente esa base al finalizar. El prefijo proviene de la suite reutilizada de la evidencia anterior.
 
-El aprendiz también ejecutó la colección completa en Postman: 82 comprobaciones aprobadas y 0 errores. La captura del resumen está en `Capturas/Resumen_pruebas_EV03.jpeg`.
+La cuenta de MongoDB debe tener permisos para crear y eliminar esa base temporal.
 
-## Estructura
+Resultado verificado en GA8: 38 casos aprobados.
 
-- backend/src: módulos HTTP, validaciones, sesiones, transacciones y acceso a datos.
-- backend/test: pruebas de integración.
-- backend/server.js e iniciar.js: inicio y cierre del servidor.
-- backend/package.json y package-lock.json: dependencias y versiones reproducibles.
-- backend/.env.example: plantilla sin credenciales reales.
-- frontend/index.html: demostración de registro y login.
-- docs: diseño, servicios, contratos, guía e informes.
-- postman: colección de solicitudes.
-- ENLACE_REPOSITORIO.txt: enlace de la versión entregada.
+Informe: `docs/resultados-integracion-ga8.json`.
 
-## Versionamiento y entrega
+### Verificación del frontend
 
-Se conserva el historial de EV01. La ampliación está en la rama aa5-ev03-jxstech:
-
-[Código correspondiente a EV03 en GitHub](https://github.com/Sergiotech2026xl/GA7-AA5-EV01/tree/aa5-ev03-jxstech).
-
-La rama debe estar publicada y el enlace debe comprobarse antes de enviar la evidencia. Para descargar esa versión con su historial:
+Desde `interfaz`:
 
 ```powershell
-git clone --branch aa5-ev03-jxstech https://github.com/Sergiotech2026xl/GA7-AA5-EV01.git JXSTech-EV03
+npm.cmd run lint
+npm.cmd run build
 ```
 
-El ZIP se denomina SERGIO_MURILLO_AA5_EV03.zip. Incluye código, documentación y enlace del repositorio. Excluye `.env`, node_modules y el directorio interno .git; el historial se conserva en GitHub. La preparación del ZIP no confirma el envío en Zajuna.
+Ambas verificaciones finalizaron correctamente.
+
+### Recorrido manual comprobado
+
+- Registro y acceso de operador.
+- Registro, edición, desactivación y reactivación de cliente.
+- Registro, edición y cambio de estado de producto.
+- Rechazo de SKU duplicado.
+- Entrada de 10 unidades y salida de 2.
+- Rechazo de salida de 20 unidades cuando solo existen 8.
+- Venta de 2 unidades a 160.000 COP: total de 320.000 COP.
+- Descuento de inventario de 8 a 6 unidades.
+- Anulación con restitución de 6 a 8 unidades.
+- Conservación del historial y de los datos al recargar.
+- Ejecución de la interfaz compilada desde el puerto 3001.
+
+## Organización del proyecto
+
+- `backend/src`: módulos de la API, validaciones, seguridad y persistencia.
+- `backend/test`: pruebas unitarias y de integración.
+- `backend/.env.example`: plantilla de configuración sin credenciales.
+- `interfaz/src/components`: formularios, tablas, cabecera y menú reutilizables.
+- `interfaz/src/Gestion*.jsx`: pantallas de los módulos comerciales.
+- `interfaz/src/api.js`: comunicación compartida con la API.
+- `interfaz/dist`: resultado de la compilación.
+- `frontend`: demostración de acceso conservada de la evidencia anterior; no es la interfaz utilizada en GA8.
+- `docs`: documentación e informes de pruebas.
+- `postman`: colección de servicios de la evidencia anterior.
+
+## Desarrollo y control de versiones
+
+El trabajo se realizó de forma incremental: autenticación, clientes, productos, inventario y ventas.
+
+Cada incremento se comprobó mediante recorridos funcionales y se registró en Git. Se reutilizaron los servicios existentes y se integraron con componentes de React.
+
+## Alcance
+
+La aplicación registra el medio de pago como dato. No procesa pagos bancarios ni incluye pasarelas, facturación electrónica, impuestos o envíos.
+
+La documentación de servicios y la colección de Postman heredadas corresponden al backend de la evidencia anterior. Las instrucciones de instalación y ejecución de GA8 son las de este README.
