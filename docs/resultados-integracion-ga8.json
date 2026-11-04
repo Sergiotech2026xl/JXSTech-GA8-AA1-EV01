@@ -1,0 +1,201 @@
+{
+  "fechaUTC": "2026-11-04T18:14:00.840Z",
+  "entorno": "HTTP real y MongoDB Atlas/replica set real",
+  "simulacionesDeBaseDeDatos": false,
+  "baseTemporalEliminada": true,
+  "estado": "aprobado",
+  "aprobadas": 38,
+  "fallidas": 0,
+  "resultados": [
+    {
+      "nombre": "Servidor y conexión disponibles",
+      "resultado": "aprobada",
+      "duracionMs": 149
+    },
+    {
+      "nombre": "Protección de todos los módulos sin sesión",
+      "resultado": "aprobada",
+      "duracionMs": 10
+    },
+    {
+      "nombre": "Registro y almacenamiento de hash de contraseña",
+      "resultado": "aprobada",
+      "duracionMs": 481
+    },
+    {
+      "nombre": "Usuario duplicado, contraseña corta y campos faltantes",
+      "resultado": "aprobada",
+      "duracionMs": 350
+    },
+    {
+      "nombre": "Login incorrecto y usuario inexistente devuelven 401",
+      "resultado": "aprobada",
+      "duracionMs": 439
+    },
+    {
+      "nombre": "Login correcto, sesión persistida y token guardado como hash",
+      "resultado": "aprobada",
+      "duracionMs": 607
+    },
+    {
+      "nombre": "Registro de cliente con los campos del proyecto previo",
+      "resultado": "aprobada",
+      "duracionMs": 177
+    },
+    {
+      "nombre": "Documento y correo de clientes únicos",
+      "resultado": "aprobada",
+      "duracionMs": 349
+    },
+    {
+      "nombre": "Correo e identificador inválidos y cliente inexistente",
+      "resultado": "aprobada",
+      "duracionMs": 353
+    },
+    {
+      "nombre": "Consulta individual, listado paginado y actualización de cliente",
+      "resultado": "aprobada",
+      "duracionMs": 1012
+    },
+    {
+      "nombre": "Registro de reloj y audífonos con stock inicial cero",
+      "resultado": "aprobada",
+      "duracionMs": 721
+    },
+    {
+      "nombre": "Validación de SKU único, categoría, precio y stock no editable",
+      "resultado": "aprobada",
+      "duracionMs": 444
+    },
+    {
+      "nombre": "Listados y paginación inválida",
+      "resultado": "aprobada",
+      "duracionMs": 446
+    },
+    {
+      "nombre": "Entradas de inventario y registro de saldos",
+      "resultado": "aprobada",
+      "duracionMs": 924
+    },
+    {
+      "nombre": "Salida manual de inventario",
+      "resultado": "aprobada",
+      "duracionMs": 541
+    },
+    {
+      "nombre": "Stock insuficiente no crea movimiento ni altera saldo",
+      "resultado": "aprobada",
+      "duracionMs": 715
+    },
+    {
+      "nombre": "Cantidad cero, negativa, decimal y movimiento de venta manual rechazados",
+      "resultado": "aprobada",
+      "duracionMs": 359
+    },
+    {
+      "nombre": "Producto inexistente y límite de existencias",
+      "resultado": "aprobada",
+      "duracionMs": 705
+    },
+    {
+      "nombre": "Producto con existencias no se puede desactivar",
+      "resultado": "aprobada",
+      "duracionMs": 267
+    },
+    {
+      "nombre": "Venta calcula precios y total en servidor y descuenta stock",
+      "resultado": "aprobada",
+      "duracionMs": 1156
+    },
+    {
+      "nombre": "Referencia duplicada evita registrar o descontar dos veces",
+      "resultado": "aprobada",
+      "duracionMs": 540
+    },
+    {
+      "nombre": "Venta con segunda línea sin stock revierte toda la operación",
+      "resultado": "aprobada",
+      "duracionMs": 1343
+    },
+    {
+      "nombre": "Venta rechaza items vacíos, repetidos y precio manipulado",
+      "resultado": "aprobada",
+      "duracionMs": 274
+    },
+    {
+      "nombre": "Venta rechaza cliente o producto inexistente y no deja descuentos",
+      "resultado": "aprobada",
+      "duracionMs": 1247
+    },
+    {
+      "nombre": "Historial conserva precio original al actualizar catálogo",
+      "resultado": "aprobada",
+      "duracionMs": 538
+    },
+    {
+      "nombre": "Anulación restituye cantidades y conserva la venta",
+      "resultado": "aprobada",
+      "duracionMs": 1157
+    },
+    {
+      "nombre": "Anulación repetida no devuelve stock dos veces",
+      "resultado": "aprobada",
+      "duracionMs": 440
+    },
+    {
+      "nombre": "Historial de movimientos filtrado por producto",
+      "resultado": "aprobada",
+      "duracionMs": 177
+    },
+    {
+      "nombre": "Ventas concurrentes: solo una compra la última existencia",
+      "resultado": "aprobada",
+      "duracionMs": 1637
+    },
+    {
+      "nombre": "Referencia concurrente conserva una sola venta y descuento",
+      "resultado": "aprobada",
+      "duracionMs": 1102
+    },
+    {
+      "nombre": "Anulaciones concurrentes: una sola restitución",
+      "resultado": "aprobada",
+      "duracionMs": 1078
+    },
+    {
+      "nombre": "Baja lógica de producto conserva historial y bloquea nuevas ventas",
+      "resultado": "aprobada",
+      "duracionMs": 1242
+    },
+    {
+      "nombre": "Anular una venta de producto inactivo también restituye stock",
+      "resultado": "aprobada",
+      "duracionMs": 899
+    },
+    {
+      "nombre": "Baja lógica de cliente preserva datos y bloquea ventas",
+      "resultado": "aprobada",
+      "duracionMs": 713
+    },
+    {
+      "nombre": "Reactivación de cliente y producto recupera la operación comercial",
+      "resultado": "aprobada",
+      "duracionMs": 1955
+    },
+    {
+      "nombre": "Errores JSON, tamaño máximo, ruta y secreto no expuesto",
+      "resultado": "aprobada",
+      "duracionMs": 7
+    },
+    {
+      "nombre": "Sesión expirada es rechazada aunque TTL aún no elimine el registro",
+      "resultado": "aprobada",
+      "duracionMs": 649
+    },
+    {
+      "nombre": "Logout invalida el token en todas las rutas protegidas",
+      "resultado": "aprobada",
+      "duracionMs": 360
+    }
+  ]
+}

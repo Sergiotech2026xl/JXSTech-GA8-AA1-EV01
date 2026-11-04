@@ -5,12 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "node test/integracion.js",
+    "test:unitarias": "node --test test/unitarias.test.js",
     "start": "node server.js"
   },
   "keywords": [],
   "author": "Sergio Murillo",
   "private": true,
-  "engines": { "node": ">=20.19.0" },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

@@ -14,7 +14,8 @@ function crearApp(ctx) {
         next();
     });
     app.use(express.json({ limit: '32kb' }));
-    app.use(express.static(path.join(__dirname, '..', '..', 'frontend')));
+    // Sirve la versión compilada de la interfaz React.
+app.use(express.static(path.join(__dirname, '..', '..', 'interfaz', 'dist')));
     const auth = autenticacion(ctx);
     app.get('/api/salud', async (req, res) => {
         await ctx.db.command({ ping: 1 });
