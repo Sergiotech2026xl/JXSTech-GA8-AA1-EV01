@@ -1,0 +1,1147 @@
+{
+  "info": {
+    "name": "JXSTech — GA7-AA5-EV03",
+    "description": "Ejecutar en orden con Collection Runner. Crea datos ficticios nuevos en cada ejecución. Los datos quedan en la base configurada; no usar contra datos reales. No contiene credenciales ni tokens reales.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "runId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "usuario",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "clienteId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "relojId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "audioId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ventaId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 — Disponibilidad",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/salud",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden.",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Servicio disponible', () => pm.expect(respuesta.estado).to.eql('disponible'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 — Registrar operador de prueba",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/usuarios/registro",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuario}}\",\n  \"password\": \"PruebaSena2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const runId = Date.now().toString() + Math.floor(Math.random() * 10000).toString().padStart(4, '0');",
+              "pm.collectionVariables.set('runId', runId);",
+              "pm.collectionVariables.set('usuario', 'ev03_' + runId);",
+              "for (const key of ['token', 'clienteId', 'relojId', 'audioId', 'ventaId']) pm.collectionVariables.set(key, '');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 — Rechazar usuario duplicado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/usuarios/registro",
+        "description": "Resultado esperado: HTTP 409. Ejecutar la colección en orden.",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuario}}\",\n  \"password\": \"PruebaSena2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 409', () => pm.response.to.have.status(409));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 — Rechazar contraseña incorrecta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/usuarios/login",
+        "description": "Resultado esperado: HTTP 401. Ejecutar la colección en orden.",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuario}}\",\n  \"password\": \"Incorrecta2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 401', () => pm.response.to.have.status(401));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 — Iniciar sesión y guardar token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/usuarios/login",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden.",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuario}}\",\n  \"password\": \"PruebaSena2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Token presente', () => pm.expect(respuesta.token).to.match(/^[a-f0-9]{64}$/));",
+              "if (pm.response.code === 200) pm.collectionVariables.set('token', respuesta.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 — Consultar sesión",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/usuarios/sesion",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 — Registrar cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/clientes",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laura\",\n  \"apellido\": \"Prueba\",\n  \"documento\": \"{{runId}}\",\n  \"correo\": \"cliente_{{runId}}@example.com\",\n  \"telefono\": \"3001234567\",\n  \"direccion\": \"Calle 10 numero 20\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "if (pm.response.code === 201) pm.collectionVariables.set('clienteId', respuesta.datos._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 — Listar clientes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/clientes?pagina=1&limite=20",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Listado paginado', () => pm.expect(respuesta.datos).to.be.an('array'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 — Consultar cliente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/clientes/{{clienteId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 — Actualizar cliente",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/clientes/{{clienteId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Lucía\",\n  \"apellido\": \"Prueba\",\n  \"documento\": \"{{runId}}\",\n  \"correo\": \"cliente_{{runId}}@example.com\",\n  \"telefono\": \"3001234567\",\n  \"direccion\": \"Calle 10 numero 20\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 — Registrar reloj",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"REL-{{runId}}\",\n  \"nombre\": \"Reloj inteligente de demostración\",\n  \"categoria\": \"reloj\",\n  \"marca\": \"Demo\",\n  \"precioCOP\": 150000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Stock inicial cero', () => pm.expect(respuesta.datos.stock).to.eql(0));",
+              "if (pm.response.code === 201) pm.collectionVariables.set('relojId', respuesta.datos._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 — Registrar audífonos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"AUD-{{runId}}\",\n  \"nombre\": \"Audífonos inteligentes de demostración\",\n  \"categoria\": \"audifonos\",\n  \"marca\": \"Demo\",\n  \"precioCOP\": 100000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "if (pm.response.code === 201) pm.collectionVariables.set('audioId', respuesta.datos._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 — Listar productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos?pagina=1&limite=20",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 — Consultar reloj",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 — Actualizar descripción del reloj",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"REL-{{runId}}\",\n  \"nombre\": \"Reloj inteligente de demostración\",\n  \"categoria\": \"reloj\",\n  \"marca\": \"Demo\",\n  \"precioCOP\": 150000,\n  \"descripcion\": \"Reloj de prueba actualizado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 — Ingresar diez relojes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/inventario/movimientos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productoId\": \"{{relojId}}\",\n  \"tipo\": \"entrada\",\n  \"cantidad\": 10,\n  \"motivo\": \"Movimiento de demostración de EV03\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 — Ingresar cinco audífonos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/inventario/movimientos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productoId\": \"{{audioId}}\",\n  \"tipo\": \"entrada\",\n  \"cantidad\": 5,\n  \"motivo\": \"Movimiento de demostración de EV03\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 — Salida manual de un reloj",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/inventario/movimientos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productoId\": \"{{relojId}}\",\n  \"tipo\": \"salida\",\n  \"cantidad\": 1,\n  \"motivo\": \"Movimiento de demostración de EV03\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19 — Consultar inventario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/inventario?pagina=1&limite=100",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20 — Consultar movimientos del reloj",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/inventario/movimientos?productoId={{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Dos movimientos antes de vender', () => pm.expect(respuesta.total).to.eql(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21 — Vender dos relojes y un audífono",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/ventas",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"referencia\": \"V-{{runId}}\",\n  \"clienteId\": \"{{clienteId}}\",\n  \"medioPago\": \"efectivo\",\n  \"items\": [\n    {\n      \"productoId\": \"{{relojId}}\",\n      \"cantidad\": 2\n    },\n    {\n      \"productoId\": \"{{audioId}}\",\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Total calculado por el servidor', () => pm.expect(respuesta.datos.totalCOP).to.eql(400000));",
+              "if (pm.response.code === 201) pm.collectionVariables.set('ventaId', respuesta.datos._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "22 — Rechazar referencia de venta duplicada",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/ventas",
+        "description": "Resultado esperado: HTTP 409. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"referencia\": \"V-{{runId}}\",\n  \"clienteId\": \"{{clienteId}}\",\n  \"medioPago\": \"efectivo\",\n  \"items\": [\n    {\n      \"productoId\": \"{{relojId}}\",\n      \"cantidad\": 2\n    },\n    {\n      \"productoId\": \"{{audioId}}\",\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 409', () => pm.response.to.have.status(409));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "23 — Rechazar venta sin existencias",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/ventas",
+        "description": "Resultado esperado: HTTP 409. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"referencia\": \"SIN-STOCK-{{runId}}\",\n  \"clienteId\": \"{{clienteId}}\",\n  \"medioPago\": \"efectivo\",\n  \"items\": [\n    {\n      \"productoId\": \"{{relojId}}\",\n      \"cantidad\": 999\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 409', () => pm.response.to.have.status(409));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "24 — Consultar venta",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/ventas/{{ventaId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "25 — Listar ventas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/ventas?pagina=1&limite=20",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "26 — Consultar stock después de vender",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Siete relojes restantes', () => pm.expect(respuesta.datos.stock).to.eql(7));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "27 — Anular venta",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/ventas/{{ventaId}}/anular",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Cliente cancela la compra de demostración\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Venta anulada', () => pm.expect(respuesta.datos.estado).to.eql('anulada'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "28 — Rechazar segunda anulación",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/ventas/{{ventaId}}/anular",
+        "description": "Resultado esperado: HTTP 409. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Anulación repetida de demostración\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 409', () => pm.response.to.have.status(409));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "29 — Verificar restitución de existencias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Nueve relojes después de anular', () => pm.expect(respuesta.datos.stock).to.eql(9));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "30 — Retirar saldo del reloj para desactivarlo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/inventario/movimientos",
+        "description": "Resultado esperado: HTTP 201. Ejecutar la colección en orden.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productoId\": \"{{relojId}}\",\n  \"tipo\": \"salida\",\n  \"cantidad\": 9,\n  \"motivo\": \"Movimiento de demostración de EV03\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "31 — Desactivar reloj",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));",
+              "pm.test('Producto inactivo', () => pm.expect(respuesta.datos.activo).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "32 — Reactivar reloj",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{relojId}}/activar",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "33 — Desactivar cliente",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/clientes/{{clienteId}}",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34 — Reactivar cliente",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": "{{baseUrl}}/api/clientes/{{clienteId}}/activar",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "35 — Cerrar sesión",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/usuarios/logout",
+        "description": "Resultado esperado: HTTP 200. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "36 — Rechazar sesión cerrada",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/usuarios/sesion",
+        "description": "Resultado esperado: HTTP 401. Ejecutar la colección en orden."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Código HTTP 401', () => pm.response.to.have.status(401));",
+              "const respuesta = pm.response.json();",
+              "pm.test('Respuesta JSON válida', () => pm.expect(respuesta).to.be.an('object'));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

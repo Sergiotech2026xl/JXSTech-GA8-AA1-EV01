@@ -1,0 +1,22 @@
+{
+  "name": "jxstech-api",
+  "version": "2.0.0",
+  "description": "API de clientes, productos, inventario y ventas de JXSTech. GA7-220501096-AA5-EV03.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test/integracion.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Sergio Murillo",
+  "private": true,
+  "engines": { "node": ">=20.19.0" },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "mongodb": "^7.8.0"
+  }
+}

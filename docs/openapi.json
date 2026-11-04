@@ -1,0 +1,2887 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "JXSTech — API de tienda",
+    "version": "2.0.0",
+    "description": "Sergio Murillo. Evidencia GA7-220501096-AA5-EV03. Tienda de relojes y audífonos inteligentes. importes en pesos colombianos enteros; no se procesan pagos externos ni facturación electrónica."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Servidor local de EV03"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "salud"
+    },
+    {
+      "name": "usuarios"
+    },
+    {
+      "name": "clientes"
+    },
+    {
+      "name": "productos"
+    },
+    {
+      "name": "inventario"
+    },
+    {
+      "name": "ventas"
+    }
+  ],
+  "paths": {
+    "/salud": {
+      "get": {
+        "operationId": "servicio01",
+        "tags": [
+          "salud"
+        ],
+        "summary": "Consultar disponibilidad",
+        "description": "Comprueba que la API puede comunicarse con MongoDB.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salud"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/usuarios/registro": {
+      "post": {
+        "operationId": "servicio02",
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Registrar operador",
+        "description": "Crea una cuenta de operador y guarda un hash bcrypt de la contraseña. Todos los operadores registrados tienen acceso a los módulos comerciales de esta versión académica local.",
+        "responses": {
+          "201": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mensaje"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Más de 30 solicitudes de registro/login combinadas por IP en 15 minutos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Registro"
+              },
+              "example": {
+                "usuario": "operador_demo",
+                "password": "PruebaSena2026"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/login": {
+      "post": {
+        "operationId": "servicio03",
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Iniciar sesión",
+        "description": "Comprueba las credenciales y entrega un token de 64 caracteres válido durante 8 horas. MongoDB conserva únicamente el hash SHA-256 del token.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Más de 30 solicitudes de registro/login combinadas por IP en 15 minutos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credenciales"
+              },
+              "example": {
+                "usuario": "operador_demo",
+                "password": "PruebaSena2026"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/sesion": {
+      "get": {
+        "operationId": "servicio04",
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Consultar sesión",
+        "description": "Devuelve el identificador y el nombre del operador autenticado.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sesion"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/logout": {
+      "post": {
+        "operationId": "servicio05",
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Cerrar sesión",
+        "description": "Elimina la sesión del token enviado. Los siguientes usos de ese token serán rechazados.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mensaje"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes": {
+      "post": {
+        "operationId": "servicio06",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Registrar cliente",
+        "description": "Guarda los mismos campos comerciales del módulo de clientes desarrollado en evidencias anteriores.",
+        "responses": {
+          "201": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClienteEntrada"
+              },
+              "example": {
+                "nombre": "Laura",
+                "apellido": "Prueba",
+                "documento": "1000123456",
+                "correo": "laura@example.com",
+                "telefono": "3001234567",
+                "direccion": "Calle 10 numero 20"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "servicio07",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Listar clientes",
+        "description": "Devuelve registros activos e inactivos en una lista paginada, ordenada por identificador descendente.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/clientes/{id}": {
+      "get": {
+        "operationId": "servicio08",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Consultar cliente",
+        "description": "Busca un registro por identificador, incluyendo registros desactivados.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "servicio09",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Actualizar cliente",
+        "description": "Actualiza todos los campos del cliente activo; el documento y el correo deben conservar su unicidad.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClienteEntrada"
+              },
+              "example": {
+                "nombre": "Laura",
+                "apellido": "Prueba",
+                "documento": "1000123456",
+                "correo": "laura@example.com",
+                "telefono": "3001234567",
+                "direccion": "Calle 10 numero 20"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "servicio10",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Desactivar cliente",
+        "description": "Baja lógica del cliente. Conserva el registro y bloquea ventas nuevas para ese cliente.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      }
+    },
+    "/clientes/{id}/activar": {
+      "patch": {
+        "operationId": "servicio11",
+        "tags": [
+          "clientes"
+        ],
+        "summary": "Activar cliente",
+        "description": "Reactiva el registro conservando su identificador e historial. Si ya está activo, responde 200.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      }
+    },
+    "/productos": {
+      "post": {
+        "operationId": "servicio12",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Registrar producto",
+        "description": "Crea un reloj o audífonos inteligentes. El stock inicial es cero; se modifica mediante inventario y ventas.",
+        "responses": {
+          "201": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductoEntrada"
+              },
+              "example": {
+                "sku": "REL-001",
+                "nombre": "Reloj inteligente",
+                "categoria": "reloj",
+                "marca": "Demo",
+                "descripcion": "Producto de demostración",
+                "precioCOP": 150000
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "servicio13",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Listar productos",
+        "description": "Devuelve registros activos e inactivos en una lista paginada, ordenada por identificador descendente.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/productos/{id}": {
+      "get": {
+        "operationId": "servicio14",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Consultar producto",
+        "description": "Busca un registro por identificador, incluyendo registros desactivados.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "servicio15",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Actualizar producto",
+        "description": "Actualiza los datos del catálogo de un producto activo. No recibe stock. Conserva los precios históricos de las ventas.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductoEntrada"
+              },
+              "example": {
+                "sku": "REL-001",
+                "nombre": "Reloj inteligente",
+                "categoria": "reloj",
+                "marca": "Demo",
+                "descripcion": "Producto de demostración",
+                "precioCOP": 150000
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "servicio16",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Desactivar producto",
+        "description": "Baja lógica del producto. Requiere stock igual a cero; conserva el historial.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      }
+    },
+    "/productos/{id}/activar": {
+      "patch": {
+        "operationId": "servicio17",
+        "tags": [
+          "productos"
+        ],
+        "summary": "Activar producto",
+        "description": "Reactiva el registro conservando su identificador e historial. Si ya está activo, responde 200.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      }
+    },
+    "/inventario": {
+      "get": {
+        "operationId": "servicio18",
+        "tags": [
+          "inventario"
+        ],
+        "summary": "Consultar existencias",
+        "description": "Lista los productos con sus existencias actuales, incluidos los inactivos, con paginación.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaProducto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/inventario/movimientos": {
+      "get": {
+        "operationId": "servicio19",
+        "tags": [
+          "inventario"
+        ],
+        "summary": "Consultar historial de inventario",
+        "description": "Lista entradas, salidas, ventas y anulaciones. Acepta productoId como filtro opcional y ordena por fecha descendente.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaMovimiento"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "productoId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "servicio20",
+        "tags": [
+          "inventario"
+        ],
+        "summary": "Registrar entrada o salida",
+        "description": "Registra un ajuste justificado y modifica el saldo en una transacción. Impide existencias negativas o superiores a 1.000.000. Los tipos venta y anulacion son exclusivos del sistema.",
+        "responses": {
+          "201": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosMovimiento"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovimientoEntrada"
+              },
+              "example": {
+                "productoId": "507f1f77bcf86cd799439012",
+                "tipo": "entrada",
+                "cantidad": 10,
+                "motivo": "Ingreso de mercancía para la tienda"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ventas": {
+      "get": {
+        "operationId": "servicio21",
+        "tags": [
+          "ventas"
+        ],
+        "summary": "Listar ventas",
+        "description": "Lista ventas registradas y anuladas mediante paginación.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaVenta"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "servicio23",
+        "tags": [
+          "ventas"
+        ],
+        "summary": "Registrar venta",
+        "description": "Valida el cliente activo, los productos activos y el stock. Calcula el total con los precios del catálogo. Guarda venta, detalles y movimientos en una sola transacción. Si falla una línea, revierte todos los cambios. Cada referencia se puede registrar una sola vez.",
+        "responses": {
+          "201": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosVenta"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VentaEntrada"
+              },
+              "example": {
+                "referencia": "VENTA-001",
+                "clienteId": "507f1f77bcf86cd799439011",
+                "medioPago": "efectivo",
+                "items": [
+                  {
+                    "productoId": "507f1f77bcf86cd799439012",
+                    "cantidad": 2
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ventas/{id}": {
+      "get": {
+        "operationId": "servicio22",
+        "tags": [
+          "ventas"
+        ],
+        "summary": "Consultar venta",
+        "description": "Devuelve el detalle, los precios históricos, total, estado, cliente y operador de una venta.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosVenta"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ]
+      }
+    },
+    "/ventas/{id}/anular": {
+      "patch": {
+        "operationId": "servicio24",
+        "tags": [
+          "ventas"
+        ],
+        "summary": "Anular venta",
+        "description": "Conserva la venta, registra el motivo y restituye todas las existencias en una transacción. La restitución solo puede suceder una vez. También admite productos desactivados; pueden reactivarse después.",
+        "responses": {
+          "200": {
+            "description": "Operación correcta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatosVenta"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos, JSON o parámetros inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas, falta de token, sesión inválida o expirada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ruta o registro no encontrado; según la operación, también un registro inactivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado, stock insuficiente, registro inactivo o conflicto de estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "El cuerpo supera los 32 KiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno; la respuesta no incluye datos privados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{24}$",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnulacionEntrada"
+              },
+              "example": {
+                "motivo": "El cliente cancela su compra"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Token opaco de sesión (no es JWT), recibido en login."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "mensaje"
+        ],
+        "additionalProperties": false
+      },
+      "Mensaje": {
+        "type": "object",
+        "properties": {
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "mensaje"
+        ],
+        "additionalProperties": false
+      },
+      "Credenciales": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "pattern": "^[a-zA-Z0-9_]{3,30}$",
+            "description": "Se recortan espacios externos y se convierte a minúsculas."
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 72,
+            "format": "password",
+            "description": "Registro: mínimo 8 caracteres. Máximo 72 bytes UTF-8; en login basta con que no esté vacía."
+          }
+        },
+        "required": [
+          "usuario",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "Registro": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "pattern": "^[a-zA-Z0-9_]{3,30}$"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 72,
+            "format": "password",
+            "description": "Máximo 72 bytes UTF-8."
+          }
+        },
+        "required": [
+          "usuario",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "token": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "Bearer"
+            ]
+          },
+          "expira": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "mensaje",
+          "token",
+          "tipo",
+          "expira"
+        ],
+        "additionalProperties": false
+      },
+      "Sesion": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "pattern": "^[a-fA-F0-9]{24}$",
+                "example": "507f1f77bcf86cd799439011"
+              },
+              "usuario": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 30
+              }
+            },
+            "required": [
+              "_id",
+              "usuario"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "datos"
+        ],
+        "additionalProperties": false
+      },
+      "Salud": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "type": "string",
+            "enum": [
+              "disponible"
+            ]
+          },
+          "proyecto": {
+            "type": "string",
+            "enum": [
+              "JXSTech"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "estado",
+          "proyecto",
+          "version"
+        ],
+        "additionalProperties": false
+      },
+      "ClienteEntrada": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "apellido": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "documento": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z0-9-]+$"
+          },
+          "correo": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 120,
+            "format": "email"
+          },
+          "telefono": {
+            "type": "string",
+            "minLength": 7,
+            "maxLength": 20,
+            "pattern": "^\\+?[\\d ()-]+$"
+          },
+          "direccion": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 150
+          }
+        },
+        "required": [
+          "nombre",
+          "apellido",
+          "documento",
+          "correo",
+          "telefono",
+          "direccion"
+        ],
+        "additionalProperties": false
+      },
+      "ProductoEntrada": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "description": "Se convierte a mayúsculas; es único."
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100
+          },
+          "categoria": {
+            "type": "string",
+            "enum": [
+              "reloj",
+              "audifonos"
+            ]
+          },
+          "marca": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 500
+          },
+          "precioCOP": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          }
+        },
+        "required": [
+          "sku",
+          "nombre",
+          "categoria",
+          "marca",
+          "precioCOP"
+        ],
+        "additionalProperties": false
+      },
+      "MovimientoEntrada": {
+        "type": "object",
+        "properties": {
+          "productoId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "entrada",
+              "salida"
+            ]
+          },
+          "cantidad": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000
+          },
+          "motivo": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "productoId",
+          "tipo",
+          "cantidad",
+          "motivo"
+        ],
+        "additionalProperties": false
+      },
+      "VentaEntrada": {
+        "type": "object",
+        "properties": {
+          "referencia": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "description": "Identificador comercial único. Se normaliza a mayúsculas. Repetirlo devuelve 409 sin otro descuento."
+          },
+          "clienteId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "medioPago": {
+            "type": "string",
+            "enum": [
+              "efectivo",
+              "transferencia",
+              "tarjeta"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "properties": {
+                "productoId": {
+                  "type": "string",
+                  "pattern": "^[a-fA-F0-9]{24}$",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "cantidad": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                }
+              },
+              "required": [
+                "productoId",
+                "cantidad"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "referencia",
+          "clienteId",
+          "medioPago",
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "AnulacionEntrada": {
+        "type": "object",
+        "properties": {
+          "motivo": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "additionalProperties": false
+      },
+      "Cliente": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "apellido": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "documento": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z0-9-]+$"
+          },
+          "correo": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 120,
+            "format": "email"
+          },
+          "telefono": {
+            "type": "string",
+            "minLength": 7,
+            "maxLength": 20,
+            "pattern": "^\\+?[\\d ()-]+$"
+          },
+          "direccion": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 150
+          },
+          "_id": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fechaRegistro": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaActualizacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "nombre",
+          "apellido",
+          "documento",
+          "correo",
+          "telefono",
+          "direccion",
+          "_id",
+          "activo",
+          "fechaRegistro",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
+      "Producto": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "description": "Se convierte a mayúsculas; es único."
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100
+          },
+          "categoria": {
+            "type": "string",
+            "enum": [
+              "reloj",
+              "audifonos"
+            ]
+          },
+          "marca": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 500
+          },
+          "precioCOP": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          },
+          "_id": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "stock": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fechaRegistro": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaActualizacion": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "sku",
+          "nombre",
+          "categoria",
+          "marca",
+          "precioCOP",
+          "descripcion",
+          "_id",
+          "stock",
+          "activo",
+          "fechaRegistro"
+        ],
+        "additionalProperties": false
+      },
+      "Movimiento": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "productoId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "sku": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "entrada",
+              "salida",
+              "venta",
+              "anulacion"
+            ]
+          },
+          "variacion": {
+            "type": "integer",
+            "minimum": -1000000,
+            "maximum": 1000000
+          },
+          "stockAnterior": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "stockPosterior": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "motivo": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200
+          },
+          "operadorId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ventaId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        },
+        "required": [
+          "_id",
+          "productoId",
+          "sku",
+          "tipo",
+          "variacion",
+          "stockAnterior",
+          "stockPosterior",
+          "motivo",
+          "operadorId",
+          "fecha"
+        ],
+        "additionalProperties": false
+      },
+      "Venta": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "referencia": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64
+          },
+          "clienteId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "cliente": {
+            "type": "object",
+            "properties": {
+              "nombre": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 60
+              },
+              "apellido": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 60
+              },
+              "documento": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 20
+              }
+            },
+            "required": [
+              "nombre",
+              "apellido",
+              "documento"
+            ],
+            "additionalProperties": false
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "properties": {
+                "productoId": {
+                  "type": "string",
+                  "pattern": "^[a-fA-F0-9]{24}$",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "cantidad": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "sku": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40
+                },
+                "nombre": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 100
+                },
+                "precioUnitarioCOP": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000000
+                },
+                "subtotalCOP": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000000000
+                }
+              },
+              "required": [
+                "productoId",
+                "cantidad",
+                "sku",
+                "nombre",
+                "precioUnitarioCOP",
+                "subtotalCOP"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "totalCOP": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000000
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "COP"
+            ]
+          },
+          "medioPago": {
+            "type": "string",
+            "enum": [
+              "efectivo",
+              "transferencia",
+              "tarjeta"
+            ]
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "registrada",
+              "anulada"
+            ]
+          },
+          "operadorId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "motivoAnulacion": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200
+          },
+          "fechaAnulacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "anuladaPor": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        },
+        "required": [
+          "_id",
+          "referencia",
+          "clienteId",
+          "cliente",
+          "items",
+          "totalCOP",
+          "moneda",
+          "medioPago",
+          "estado",
+          "operadorId",
+          "fecha"
+        ],
+        "additionalProperties": false
+      },
+      "DatosCliente": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "$ref": "#/components/schemas/Cliente"
+          },
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "datos"
+        ],
+        "additionalProperties": false
+      },
+      "ListaCliente": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cliente"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pagina": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "limite": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "datos",
+          "total",
+          "pagina",
+          "limite"
+        ],
+        "additionalProperties": false
+      },
+      "DatosProducto": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "$ref": "#/components/schemas/Producto"
+          },
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "datos"
+        ],
+        "additionalProperties": false
+      },
+      "ListaProducto": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Producto"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pagina": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "limite": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "datos",
+          "total",
+          "pagina",
+          "limite"
+        ],
+        "additionalProperties": false
+      },
+      "DatosMovimiento": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "$ref": "#/components/schemas/Movimiento"
+          },
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "datos"
+        ],
+        "additionalProperties": false
+      },
+      "ListaMovimiento": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Movimiento"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pagina": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "limite": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "datos",
+          "total",
+          "pagina",
+          "limite"
+        ],
+        "additionalProperties": false
+      },
+      "DatosVenta": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "$ref": "#/components/schemas/Venta"
+          },
+          "mensaje": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "datos"
+        ],
+        "additionalProperties": false
+      },
+      "ListaVenta": {
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Venta"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pagina": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "limite": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "datos",
+          "total",
+          "pagina",
+          "limite"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

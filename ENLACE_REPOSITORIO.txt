@@ -1,0 +1,15 @@
+Aprendiz: Sergio Murillo
+Evidencia: GA7-220501096-AA5-EV03
+Proyecto: JXSTech - tienda de relojes y audifonos inteligentes
+
+Enlace del codigo correspondiente a EV03:
+https://github.com/Sergiotech2026xl/GA7-AA5-EV01/tree/aa5-ev03-jxstech
+
+Repositorio:
+https://github.com/Sergiotech2026xl/GA7-AA5-EV01
+
+Rama: aa5-ev03-jxstech
+Se conserva el historial de EV01 y los cambios de esta evidencia.
+
+Descarga con historial:
+git clone --branch aa5-ev03-jxstech https://github.com/Sergiotech2026xl/GA7-AA5-EV01.git JXSTech-EV03

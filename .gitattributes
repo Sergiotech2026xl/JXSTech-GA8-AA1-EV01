@@ -1,0 +1,6 @@
+# Conserva intactos los documentos e imagenes al exportar desde Git.
+*.pdf binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.bundle binary

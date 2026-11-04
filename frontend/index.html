@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JXSTech — Acceso de operadores</title>
+
+    <style>
+        /* Presentación adaptable a computadores y celulares. */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #eef2f6;
+            color: #182435;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 12px;
+        }
+
+        header p {
+            color: #526174;
+        }
+
+        .formularios {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        section {
+            padding: 28px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 6px 24px #18243512;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #8795a6;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            background: #1557b0;
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        input:focus-visible,
+        button:focus-visible {
+            outline: 3px solid #e59a14;
+            outline-offset: 3px;
+        }
+
+        .mensaje {
+            min-height: 44px;
+            line-height: 1.5;
+        }
+
+        .exito {
+            color: #176634;
+        }
+
+        .error {
+            color: #b42318;
+        }
+
+        small {
+            display: block;
+            margin-top: 8px;
+            color: #526174;
+        }
+
+        footer {
+            margin-top: 28px;
+            text-align: center;
+            color: #526174;
+        }
+
+        @media (max-width: 650px) {
+            .formularios {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>JXSTech — Acceso de operadores</h1>
+            <p>Tienda de relojes y audífonos inteligentes.</p>
+            <p>Demostración de acceso. Los servicios de clientes, productos, inventario y ventas se prueban con la colección de Postman incluida.</p>
+        </header>
+
+        <div class="formularios">
+            <!-- Formulario que enviará los datos al servicio de registro. -->
+            <section aria-labelledby="tituloRegistro">
+                <h2 id="tituloRegistro">Crear cuenta</h2>
+
+                <form id="registroForm">
+                    <label for="registroUsuario">Usuario</label>
+                    <input
+                        id="registroUsuario"
+                        name="usuario"
+                        type="text"
+                        minlength="3"
+                        maxlength="30"
+                        pattern="[a-zA-Z0-9_]{3,30}"
+                        autocomplete="username"
+                        aria-describedby="ayudaUsuario"
+                        required
+                    >
+                    <small id="ayudaUsuario">
+                        Entre 3 y 30 letras, números o guiones bajos.
+                    </small>
+
+                    <label for="registroPassword">Contraseña</label>
+                    <input
+                        id="registroPassword"
+                        name="password"
+                        type="password"
+                        minlength="8"
+                        maxlength="72"
+                        autocomplete="new-password"
+                        aria-describedby="ayudaPassword"
+                        required
+                    >
+                    <small id="ayudaPassword">Mínimo 8 caracteres.</small>
+
+                    <button type="submit">Registrarme</button>
+                    <p class="mensaje" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <!-- Formulario que enviará las credenciales para autenticación. -->
+            <section aria-labelledby="tituloLogin">
+                <h2 id="tituloLogin">Iniciar sesión</h2>
+
+                <form id="loginForm">
+                    <label for="loginUsuario">Usuario</label>
+                    <input
+                        id="loginUsuario"
+                        name="usuario"
+                        type="text"
+                        maxlength="30"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <label for="loginPassword">Contraseña</label>
+                    <input
+                        id="loginPassword"
+                        name="password"
+                        type="password"
+                        maxlength="72"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button type="submit">Ingresar</button>
+                    <p class="mensaje" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+        </div>
+
+        <footer>
+            Evidencia GA7-220501096-AA5-EV03 — Sergio Murillo
+        </footer>
+    </main>
+
+    <script>
+        // Conecta cada formulario con su correspondiente servicio web.
+        function conectarFormulario(formularioId, ruta) {
+            const formulario = document.getElementById(formularioId);
+
+            formulario.addEventListener('submit', async (evento) => {
+                evento.preventDefault();
+
+                const boton = formulario.querySelector('button');
+                const mensaje = formulario.querySelector('.mensaje');
+                const datos = new FormData(formulario);
+
+                boton.disabled = true;
+                mensaje.className = 'mensaje';
+                mensaje.textContent = 'Procesando solicitud...';
+
+                try {
+                    // Las credenciales se envían en JSON al servidor.
+                    const respuesta = await fetch(ruta, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            usuario: datos.get('usuario').trim(),
+                            password: datos.get('password')
+                        })
+                    });
+
+                    const resultado = await respuesta.json();
+
+                    // textContent muestra el mensaje sin interpretar HTML.
+                    mensaje.textContent = resultado.mensaje;
+                    mensaje.className = respuesta.ok
+                        ? 'mensaje exito'
+                        : 'mensaje error';
+
+                    if (respuesta.ok) {
+                        formulario.reset();
+                    }
+                } catch (error) {
+                    mensaje.textContent = 'No fue posible contactar al servidor.';
+                    mensaje.className = 'mensaje error';
+                } finally {
+                    // Permite volver a intentar después de cada solicitud.
+                    boton.disabled = false;
+                }
+            });
+        }
+
+        conectarFormulario('registroForm', '/api/usuarios/registro');
+        conectarFormulario('loginForm', '/api/usuarios/login');
+    </script>
+</body>
+</html>
