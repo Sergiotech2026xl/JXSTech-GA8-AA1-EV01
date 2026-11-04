@@ -2,6 +2,7 @@ const OPCIONES = [
   { id: 'clientes', nombre: 'Clientes' },
   { id: 'productos', nombre: 'Productos' },
   { id: 'inventario', nombre: 'Inventario' },
+  { id: 'ventas', nombre: 'Ventas' },
 ]
 
 export default function Sidebar({

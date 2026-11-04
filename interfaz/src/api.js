@@ -57,3 +57,25 @@ export async function solicitar(
 
   return contenido
 }
+// Reúne las páginas de un catálogo para los selectores de ventas.
+export async function listarTodos(ruta) {
+  const registros = []
+  let pagina = 1
+
+  while (true) {
+    const resultado = await solicitar(
+      `${ruta}?pagina=${pagina}&limite=100`,
+    )
+
+    registros.push(...resultado.datos)
+
+    if (
+      registros.length >= resultado.total ||
+      resultado.datos.length === 0
+    ) {
+      return registros
+    }
+
+    pagina++
+  }
+}

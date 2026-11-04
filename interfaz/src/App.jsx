@@ -6,11 +6,13 @@ import GestionClientes from './GestionClientes'
 import GestionProductos from './GestionProductos'
 import GestionInventario from './GestionInventario'
 import { borrarToken, obtenerToken, solicitar } from './api'
+import GestionVentas from './GestionVentas'
 
 const PANTALLAS = {
   clientes: GestionClientes,
   productos: GestionProductos,
   inventario: GestionInventario,
+  ventas: GestionVentas,
 }
 
 export default function App() {
